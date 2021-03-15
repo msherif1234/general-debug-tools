@@ -74,6 +74,10 @@ function setup_fedora_vm() {
 	
 	#install Lens
 	sudo snap install kontena-lens --classic
+	
+	#install wireshark
+	sudo dnf install -y wireshark
+	sudo usermod -a -G wireshark $USERNAME
 
 	# clone upstream repo
 	cd $GOPATH/src
