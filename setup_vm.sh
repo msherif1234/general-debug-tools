@@ -76,11 +76,8 @@ function setup_fedora_vm() {
 	sudo snap install kontena-lens --classic
 	
 	# install oc CLI tool
-	cd $HOME
-	wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
-	tar -xvf openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
-	sudo mv openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc /usr/local/bin/
-	rm -rf openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit*
+	# https://access.redhat.com/downloads/content/290/ver=4.7/rhel---8/4.7.1/x86_64/product-software
+	# need latest version to be able to rin oc adm must-gather
 
 	#install wireshark
 	sudo dnf install -y wireshark
