@@ -74,6 +74,13 @@ function setup_fedora_vm() {
 	
 	#install Lens
 	sudo snap install kontena-lens --classic
+	
+	# install oc CLI tool
+	cd $HOME
+	wget https://github.com/openshift/origin/releases/download/v1.5.1/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
+	tar -xvf openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
+	sudo mv openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc /usr/local/bin/
+	rm -rf openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit*
 
 	# clone upstream repo
 	cd $GOPATH/src
