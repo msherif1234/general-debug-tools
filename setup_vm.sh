@@ -82,6 +82,10 @@ function setup_fedora_vm() {
 	sudo mv openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc /usr/local/bin/
 	rm -rf openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit*
 
+	#install wireshark
+	sudo dnf install -y wireshark
+	sudo usermod -a -G wireshark $USERNAME
+
 	# clone upstream repo
 	cd $GOPATH/src
 	if [[ -z "$mygitid" ]]; then
