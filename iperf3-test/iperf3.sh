@@ -22,7 +22,7 @@ function run() {
         	echo "Waiting for ${POD} to start..."
         	sleep 5
     	done
-    	oc exec -it ${POD} -- bash -c 'iperf3 -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT"'
+    	oc exec -it ${POD} -- bash -c 'iperf3 -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT" -t1'
 
     	echo
 	done
@@ -33,6 +33,6 @@ function cleanup() {
 }
 
 setup
-run $@
+run
 cleanup
 
