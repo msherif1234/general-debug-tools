@@ -22,9 +22,7 @@ function run() {
         	echo "Waiting for ${POD} to start..."
         	sleep 5
     	done
-    	#HOST=$(oc get pod ${POD} -o jsonpath='{.status.hostIP}')
-    	#oc exec -it ${POD} -- iperf3 -c iperf3-server -T  "Client on ${HOST}" $@
-    	oc exec -it ${POD} -- bash -c "iperf3 -c $IPERF3_SERVER_SERVICE_HOST -p $IPERF3_SERVER_SERVICE_PORT"
+    	oc exec -it ${POD} -- bash -c 'iperf3 -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT"'
 
     	echo
 	done
