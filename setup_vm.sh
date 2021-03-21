@@ -83,6 +83,9 @@ function setup_fedora_vm() {
 	sudo dnf install -y wireshark
 	sudo usermod -a -G wireshark $USERNAME
 
+	#install awscli
+	sudo dnf install -y awscli
+
 	# clone upstream repo
 	cd $GOPATH/src
 	if [[ -z "$mygitid" ]]; then
