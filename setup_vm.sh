@@ -85,6 +85,9 @@ function setup_fedora_vm() {
 
 	#install awscli
 	sudo dnf install -y awscli
+	
+	#install gcloud cli
+	sudo snap install google-cloud-sdk --classic
 
 	# clone upstream repo
 	cd $GOPATH/src
