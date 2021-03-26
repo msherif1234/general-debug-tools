@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: iperf3-server-deployment
+  namespace: default
   labels:
     app: iperf3-server
 spec:
@@ -34,7 +35,9 @@ spec:
         args: ['-s']
         ports:
         - containerPort: 5201
-          name: server
+          name: server-tcp
+        - containerPort: 5301
+          name: server-udp
       terminationGracePeriodSeconds: 0
 
 ---
@@ -43,13 +46,19 @@ apiVersion: v1
 kind: Service
 metadata:
   name: iperf3-server
+  namespace: default
 spec:
   selector:
     app: iperf3-server
   ports:
-  - protocol: TCP
+  - name: tcp
+    protocol: TCP
     port: 5201
     targetPort: 5201
+  - name: udp
+    protocol: UDP
+    port: 5301
+    targetPort: 5301
     
 ---
     
@@ -57,6 +66,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: iperf3-clients
+  namespace: default
   labels:
     app: iperf3-client
 spec:
@@ -68,10 +78,6 @@ spec:
       labels:
         app: iperf3-client
     spec:
-      tolerations:
-        - key: node-role.kubernetes.io/master
-          operator: Exists
-          effect: NoSchedule
       containers:
       - name: iperf3-client
         image: networkstatic/iperf3
