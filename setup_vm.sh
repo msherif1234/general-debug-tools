@@ -58,7 +58,10 @@ function setup_fedora_vm() {
 
 	#Install tmate
 	sudo dnf install -y tmate
-
+	
+	#Install asciinema for console demo
+	sudo dnf install -y asciinema
+	
 	#Change firewall to use iptables
 	sudo sed -i "s/^FirewallBackend\=.*/FirewallBackend=iptables/" "/etc/firewalld/firewalld.conf"
 	sudo systemctl restart firewalld
@@ -88,6 +91,9 @@ function setup_fedora_vm() {
 	
 	#install gcloud cli
 	sudo snap install google-cloud-sdk --classic
+	
+	#install Protobuf
+	sudo snap install protobuf --classic
 
 	# clone upstream repo
 	cd $GOPATH/src
