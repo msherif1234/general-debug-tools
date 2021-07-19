@@ -16,7 +16,7 @@ function setup_fedora_vm() {
 	mkdir -p $HOME/go/src
 	git clone https://github.com/udhos/update-golang.git
 	pushd update-golang
-	./update-golang.sh
+	sudo ./update-golang.sh
 	popd
 
 	export GOPATH=$HOME/go
@@ -46,7 +46,7 @@ function setup_fedora_vm() {
 
 	#Install kubectl
 	curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-	install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+	sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 
 	#Install j2
 	sudo dnf install -y snapd
@@ -94,23 +94,6 @@ function setup_fedora_vm() {
 	
 	#install Protobuf
 	sudo snap install protobuf --classic
-
-	# clone upstream repo
-	cd $GOPATH/src
-	if [[ -z "$mygitid" ]]; then
-	    git clone https://github.com/ovn-kubernetes.git
-	else 		
-	    git clone https://github.com/$mygitid/ovn-kubernetes.git
-	fi
-
-	#clone k8s
-	cd $GOPATH/src
-	mkdir k8s.io; cd k8s.io
-	git clone https://github.com/kubernetes/kubernetes.git
-	#build e2e test binary
-	pushd $GOPATH/src/k8s.io/kubernetes
-	make WHAT="test/e2e/e2e.test vendor/github.com/onsi/ginkgo/ginkgo"
-	popd
 
 	#Reboot
 	sudo reboot
