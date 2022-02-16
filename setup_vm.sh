@@ -72,6 +72,10 @@ function setup_fedora_vm() {
 	#Instal gvim
 	sudo dnf install -y vim-X11
 
+        # to run pprof
+	sudo dnf install -y graphviz
+        sudo dnf install -y sensible-utils
+
 	#install Goland
 	sudo snap install goland --classic
 	
