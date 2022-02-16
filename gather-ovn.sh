@@ -7,8 +7,23 @@ date
 
 set -x
 
-OVNMASTER=$(oc -n openshift-ovn-kubernetes get pods -o go-template='{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | grep ovnkube-master | head -1)
+# identify ovnkube-master leader pod
+function get_leader_pod {
+    for f in $(oc -n openshift-ovn-kubernetes get pods -l app=ovnkube-master \
+        -o jsonpath="{.items[*].metadata.name}")
+    do
+        f_role=$(oc -n openshift-ovn-kubernetes exec "${f}" -c northd -- \
+            ovs-appctl -t /var/run/ovn/ovnnb_db.ctl cluster/status OVN_Northbound | \
+            grep -E "^Role: ")
+        echo "${f_role}" | grep -q leader && { echo ${f}; return $(/bin/true); }
+    done
+    return $(/bin/false)
+}
 
+#OVNMASTER=$(oc -n openshift-ovn-kubernetes get pods -o go-template='{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}' | grep ovnkube-master | head -1)
+OVNMASTER=$(get_leader_pod)
+
+echo ">>> Elected master ${OVNMASTER}"
 for ns in spk-dns46 spk-data; do
 
 	if oc api-resources | egrep -q 'ingressroutevlans .*k8s.f5net.com' ; then
@@ -42,6 +57,9 @@ oc -n openshift-ovn-kubernetes exec -it $OVNMASTER -- ovn-nbctl --no-leader-only
 echo ">>> Gathering router list"
 oc -n openshift-ovn-kubernetes exec -it $OVNMASTER -- ovn-nbctl --no-leader-only lr-list
 
+echo ">>> Gathering router static routes"
+oc -n openshift-ovn-kubernetes exec -it $OVNMASTER -- ovn-nbctl --no-leader-only find logical_router_static_route
+
 ROUTERS=$(oc -n openshift-ovn-kubernetes exec -it $OVNMASTER -- ovn-nbctl --no-leader-only lr-list | cut -d " " -f 1)
 
 echo ">>> Gathering all routes"
@@ -52,11 +70,29 @@ for router in $ROUTERS; do
 
 done
 
+echo ">>> Gathering load_balancer_group"
+oc -n openshift-ovn-kubernetes exec -it $OVNMASTER -- ovn-nbctl --no-leader-only list load_balancer_group
+
 echo ">>> Gathering ls-lb-list"
 for node in $(kubectl get nodes -o json| jq -r '.items[].metadata.name'); do 
 
 	echo "> Node $node"
 	oc -n openshift-ovn-kubernetes exec -it $OVNMASTER -c sbdb -- /bin/sh -c "ovn-nbctl --no-leader-only ls-lb-list $node"
+done
+
+echo ">>> Gathering lr-policy-list and lr-nat-list"
+for router in $ROUTERS; do 
+
+   echo "> Routes of router $router"
+   oc -n openshift-ovn-kubernetes exec -it $OVNMASTER  -- /bin/sh -c "ovn-nbctl --no-leader-only lr-lb-list $router"
+   oc -n openshift-ovn-kubernetes exec -it $OVNMASTER  -- /bin/sh -c "ovn-nbctl --no-leader-only lr-nat-list $router"
+done
+
+echo ">>> Gathering OVS interfaces"
+for pod in $(kubectl get pods -n openshift-ovn-kubernetes -l app=ovnkube-node -o json| jq -r '.items[].metadata.name'); do
+   oc -n openshift-ovn-kubernetes exec -it $pod  -- /bin/sh -c "ovs-vsctl show"
+   oc -n openshift-ovn-kubernetes exec -it $pod  -- /bin/sh -c "ovs-ofctl dump-ports-desc br-int"
+   oc -n openshift-ovn-kubernetes exec -it $pod  -- /bin/sh -c "ovs-ofctl dump-ports-desc br-ex"
 done
 
 echo ">>> Gathering OVN masters logs"
