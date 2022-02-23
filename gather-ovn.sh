@@ -80,11 +80,18 @@ for node in $(kubectl get nodes -o json| jq -r '.items[].metadata.name'); do
 	oc -n openshift-ovn-kubernetes exec -it $OVNMASTER -c sbdb -- /bin/sh -c "ovn-nbctl --no-leader-only ls-lb-list $node"
 done
 
+echo ">>> Gathering acl-list"
+for node in $(kubectl get nodes -o json| jq -r '.items[].metadata.name'); do 
+
+	echo "> Node $node"
+	oc -n openshift-ovn-kubernetes exec -it $OVNMASTER -c sbdb -- /bin/sh -c "ovn-nbctl --no-leader-only acl-list $node"
+done
+
 echo ">>> Gathering lr-policy-list and lr-nat-list"
 for router in $ROUTERS; do 
 
    echo "> Routes of router $router"
-   oc -n openshift-ovn-kubernetes exec -it $OVNMASTER  -- /bin/sh -c "ovn-nbctl --no-leader-only lr-lb-list $router"
+   oc -n openshift-ovn-kubernetes exec -it $OVNMASTER  -- /bin/sh -c "ovn-nbctl --no-leader-only lr-policy-list $router"
    oc -n openshift-ovn-kubernetes exec -it $OVNMASTER  -- /bin/sh -c "ovn-nbctl --no-leader-only lr-nat-list $router"
 done
 
