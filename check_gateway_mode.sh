@@ -15,7 +15,7 @@ function check_ovnkube_nodes {
         -o jsonpath="{.items[*].metadata.name}")
     do
         gw_mode=$(oc logs -n openshift-ovn-kubernetes "${f}" -c ovnkube-node | \
-            grep -E "Gateway:{Mode:")
+            grep -E "gateway-mode")
         echo "${gw_mode}" | grep -q shared && { echo ${f}; return $(/bin/true); }
     done
     return $(/bin/false)
