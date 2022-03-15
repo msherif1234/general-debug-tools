@@ -12,7 +12,7 @@ function yell {
 
 timestamp() {
     IFS=":." read -r h m s ms<<<"$1"
-    ret_val=$(( (h*3600 + m*60 + s) ))     
+    ret_val=$(( (h*3600 + m*60 + $((10#$s))) ))     
 }
 
 # identify ovnkube-master leader pod
