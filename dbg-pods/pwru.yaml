@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pwru-deployment
+  namespace: default
+  labels:
+    app: pwru
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pwru
+  template:
+    metadata:
+      labels:
+        app: pwru
+    spec:
+      hostNetwork: true
+      hostPID: true
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/role
+                operator: In
+                values:
+                - master
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+      containers:
+      - name: pwru
+        image: ghcr.io/larsks/netutils:latest
+        command: ['/bin/sh', '-c', 'sleep infinity']
+
+      securityContext:
+            privileged: true
+            runAsUser: 0
+            capabilities:
+              add:
+                - CAP_BPF
+                - CAP_SYS_ADMIN
+                - CAP_NET_ADMIN
+      volumeMounts:
+        - mountPath: /sys/kernel/
+          name: sys-kernel
+        - mountPath: /lib/modules/
+          name: lib-modules
+        - mountPath: /host
+          name: host
+          
+      terminationGracePeriodSeconds: 0
+      nodeSelector:
+        kubernetes.io/hostname: <nodename>
+      volumes:
+      - name: sys-kernel
+        hostPath:
+          path: /sys/kernel
+      - name: lib-modules
+        hostPath:
+          path: /lib/modules
+      - name: host
+        hostPath:
+          path: /
+          type: Directory
+
+---
+

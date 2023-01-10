@@ -1,0 +1,40 @@
+#Use recent image tag if needed https://quay.io/repository/cilium/cilium-bpftool?tab=tags
+#<bpftool map> will list all maps we need to find the one that uses lpm trie and note its id number
+#bpftool map dump id <number from prev command> this will dump the entries map
+#this pod needs to be created on node where you want bpf debugging, <nodeName> will be required node hostname
+
+kind: Pod
+apiVersion: v1
+metadata:
+  name: hostnetwork-pod
+  labels:
+    name: hostnetwork-pod
+spec:
+  containers:
+  - name: hostnetwork-pod
+    command:
+    - "/bin/bash"
+    - "-c"
+    - trap 'kill $(jobs -p); exit 0' TERM ; sleep 2000000000000 & wait
+    image: quay.io/mmahmoud/pwru:latest
+    securityContext:
+      privileged: true
+  hostNetwork: true
+  hostPID: true
+  affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            preference:
+              matchExpressions:
+              - key: kubernetes.io/role
+                operator: In
+                values:
+                    - master
+        tolerations:
+            - key: node-role.kubernetes.io/master
+              operator: Exists
+              effect: NoSchedule
+
+  nodeSelector:
+        kubernetes.io/hostname: 5tt0kjb-b5564-5r996-master-2
