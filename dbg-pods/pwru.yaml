@@ -44,18 +44,16 @@ spec:
                 - CAP_SYS_ADMIN
                 - CAP_NET_ADMIN
                 - CAP_NET_RAW
-      volumeMounts:
+        volumeMounts:
         - mountPath: /sys/kernel/
           name: sys-kernel
         - mountPath: /lib/modules/
           name: lib-modules
-        - mountPath: /host
-          name: host
         - mountPath: /sys/kernel/debug/tracing   
           name: sys-kernel-debug
       terminationGracePeriodSeconds: 0
       nodeSelector:
-        kubernetes.io/hostname: ch54j22-b5564-l2wjp-master-0
+        kubernetes.io/hostname: pfcdg6k-b5564-2qmkr-master-0
       volumes:
       - name: sys-kernel
         hostPath:
@@ -68,10 +66,6 @@ spec:
       - name: lib-modules
         hostPath:
           path: /lib/modules
-          type: Directory
-      - name: host
-        hostPath:
-          path: /
           type: Directory
 
 ---
