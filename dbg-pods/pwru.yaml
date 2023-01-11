@@ -33,7 +33,7 @@ spec:
           effect: NoSchedule
       containers:
       - name: pwru
-        image: ghcr.io/larsks/netutils:latest
+        image: quay.io/mmahmoud/netutils:latest
         command: ['/bin/sh', '-c', 'sleep infinity']
         securityContext:
             privileged: true
@@ -53,7 +53,7 @@ spec:
           name: sys-kernel-debug
       terminationGracePeriodSeconds: 0
       nodeSelector:
-        kubernetes.io/hostname: pfcdg6k-b5564-2qmkr-master-0
+        kubernetes.io/hostname: <nodeName>
       volumes:
       - name: sys-kernel
         hostPath:
