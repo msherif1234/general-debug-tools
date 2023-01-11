@@ -35,8 +35,7 @@ spec:
       - name: pwru
         image: ghcr.io/larsks/netutils:latest
         command: ['/bin/sh', '-c', 'sleep infinity']
-
-      securityContext:
+        securityContext:
             privileged: true
             runAsUser: 0
             capabilities:
@@ -44,6 +43,7 @@ spec:
                 - CAP_BPF
                 - CAP_SYS_ADMIN
                 - CAP_NET_ADMIN
+                - CAP_NET_RAW
       volumeMounts:
         - mountPath: /sys/kernel/
           name: sys-kernel
@@ -51,17 +51,24 @@ spec:
           name: lib-modules
         - mountPath: /host
           name: host
-          
+        - mountPath: /sys/kernel/debug/tracing   
+          name: sys-kernel-debug
       terminationGracePeriodSeconds: 0
       nodeSelector:
-        kubernetes.io/hostname: <nodename>
+        kubernetes.io/hostname: ch54j22-b5564-l2wjp-master-0
       volumes:
       - name: sys-kernel
         hostPath:
           path: /sys/kernel
+          type: Directory
+      - name: sys-kernel-debug
+        hostPath:
+          path: /sys/kernel/debug/tracing
+          type: Directory
       - name: lib-modules
         hostPath:
           path: /lib/modules
+          type: Directory
       - name: host
         hostPath:
           path: /
