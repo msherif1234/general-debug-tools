@@ -11,7 +11,7 @@ docker push quay.io/mmahmoud/netutils:latest
 - oc create -f ~/ovn-tools/dbg-pods/pwru.yaml
 - example running pwru commands
 ```bash
- oc exec -it pwru-deployment-76cb578546-wz4wc -- pwru --filter-proto tcp --filter-src-port 33637 --output-tuple
+ oc exec -it pwru-deployment-76cb578546-wz4wc -- pwru --all-kmods --filter-proto tcp --filter-port 33637 --output-tuple
 2023/01/11 15:42:04 Per cpu buffer size: 4096 bytes
 2023/01/11 15:42:04 Attaching kprobes...
 ```
