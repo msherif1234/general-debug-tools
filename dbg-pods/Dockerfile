@@ -12,7 +12,7 @@ RUN yum -y install \
     wireshark-cli \
     vim-enhanced \
     git \
-	gdb \
+    gdb \
     curl \
     findutils \
     procps-ng \
