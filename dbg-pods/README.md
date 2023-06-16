@@ -8,7 +8,7 @@ docker push quay.io/mmahmoud/netutils:latest
 
 # To deploy pwru pod on an existing OCP cluster
 - make sure to change `kubernetes.io/hostname:` to match the nodeName you wanted to deploy this pod on.
-- oc create -f ~/ovn-tools/dbg-pods/pwru.yaml
+- oc create -f ~/ovn-tools/dbg-pods/dbg_pod.yaml
 - example running pwru commands
 ```bash
  oc exec -it pwru-deployment-76cb578546-wz4wc -- pwru --all-kmods --filter-proto tcp --filter-port 33637 --output-tuple

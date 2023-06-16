@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pwru-deployment
+  name: dbgtools-deployment
   namespace: default
   labels:
-    app: pwru
+    app: dbgtools
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: pwru
+      app: dbgtools
   template:
     metadata:
       labels:
-        app: pwru
+        app: dbgtools
     spec:
       hostNetwork: true
       hostPID: true
@@ -32,7 +32,7 @@ spec:
           operator: Exists
           effect: NoSchedule
       containers:
-      - name: pwru
+      - name: dbgtools
         image: quay.io/mmahmoud/netutils:latest
         command: ['/bin/sh', '-c', 'sleep infinity']
         securityContext:
@@ -51,6 +51,8 @@ spec:
           name: lib-modules
         - mountPath: /sys/kernel/debug/tracing   
           name: sys-kernel-debug
+        - mountPath: /boot
+          name: boot
       terminationGracePeriodSeconds: 0
       nodeSelector:
         kubernetes.io/hostname: <nodeName>
@@ -66,6 +68,10 @@ spec:
       - name: lib-modules
         hostPath:
           path: /lib/modules
+          type: Directory
+      - name: boot
+        hostPath:
+          path: /boot
           type: Directory
 
 ---
