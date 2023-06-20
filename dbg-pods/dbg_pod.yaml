@@ -34,7 +34,8 @@ spec:
       containers:
       - name: dbgtools
         image: quay.io/mmahmoud/netutils:latest
-        command: ['/bin/sh', '-c', 'sleep infinity']
+        command: ['/bin/sh', '-c']
+        args: ["cp /lib/modules/$(uname -r)/config /boot/config-$(uname -r) && sleep infinity"]
         securityContext:
             privileged: true
             runAsUser: 0
@@ -51,11 +52,9 @@ spec:
           name: lib-modules
         - mountPath: /sys/kernel/debug/tracing   
           name: sys-kernel-debug
-        - mountPath: /boot
-          name: boot
       terminationGracePeriodSeconds: 0
       nodeSelector:
-        kubernetes.io/hostname: <nodeName>
+        kubernetes.io/hostname: <node names>
       volumes:
       - name: sys-kernel
         hostPath:
@@ -68,10 +67,6 @@ spec:
       - name: lib-modules
         hostPath:
           path: /lib/modules
-          type: Directory
-      - name: boot
-        hostPath:
-          path: /boot
           type: Directory
 
 ---
