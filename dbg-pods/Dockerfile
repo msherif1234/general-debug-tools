@@ -1,10 +1,13 @@
 ARG PWRU_VERSION="0.0.8"
 ARG BPFTRACE_VERSION="cf54d1682c19c0b2ebc7f81160282345c0aded79-alpine"
-ARG RETIS_VERSION="1.0.0"
+ARG RETIS_VERSION="1.1.0"
 
 FROM docker.io/cilium/pwru:${PWRU_VERSION} AS pwru
 FROM quay.io/iovisor/bpftrace:${BPFTRACE_VERSION} AS bpftrace
 FROM quay.io/retis/retis:${RETIS_VERSION} AS retis
+
+FROM docker.io/library/golang:1.20 as builder
+RUN git clone https://github.com/redcanaryco/ebpfmon.git && cd ebpfmon && make && cp ./ebpfmon /usr/bin/ebpfmon
 
 FROM docker.io/fedora:37
 
@@ -50,3 +53,4 @@ RUN yum -y install \
 COPY --from=pwru /usr/local/bin/pwru /usr/local/bin/pwru
 COPY --from=bpftrace /usr/bin/bpftrace /usr/local/bin/bpftrace
 COPY --from=retis /usr/bin/retis /usr/local/bin/retis
+COPY --from=builder /usr/bin/ebpfmon /usr/local/bin/ebpfmon
