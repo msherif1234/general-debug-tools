@@ -52,9 +52,11 @@ spec:
           name: lib-modules
         - mountPath: /sys/kernel/debug/tracing   
           name: sys-kernel-debug
+        - mountPath: /sys/fs/cgroup
+          name: cgroup
       terminationGracePeriodSeconds: 0
       nodeSelector:
-        kubernetes.io/hostname: <node names>
+        kubernetes.io/hostname: <node name>
       volumes:
       - name: sys-kernel
         hostPath:
@@ -67,6 +69,10 @@ spec:
       - name: lib-modules
         hostPath:
           path: /lib/modules
+          type: Directory
+      - name: cgroup
+        hostPath:
+          path: /sys/fs/cgroup
           type: Directory
 
 ---
