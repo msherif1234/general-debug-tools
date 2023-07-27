@@ -63,4 +63,12 @@ Options:
   -V, --version
           Print version
 ```
+- to use ebpfmon tool
+```bash
+oc exec -it dbgtools-deployment-78b76b4f84-bq95d -n default -- bash
+[root@ci-ln-cr1mkk2-72292-lfbsk-worker-a-rtzkw /]# mkdir -p /tmp/cgroup2
+mount -t cgroup2 none /tmp/cgroup2
+[root@ci-ln-cr1mkk2-72292-lfbsk-worker-a-rtzkw /]# ebpfmon
+Collecting bpf information. This may take a few seconds
 
+```
