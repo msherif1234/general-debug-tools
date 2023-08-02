@@ -24,7 +24,6 @@ RUN yum -y install \
     nftables \
     bcc \
     bpftool \
-    perf \
     strace \
     ltrace \
     trace-cmd \
@@ -49,6 +48,7 @@ RUN yum -y install \
     glibc-headers \
     @development-tools \
     darkhttpd
+RUN wget https://mirrors.edge.kernel.org/pub/linux/kernel/tools/perf/v6.3.0/perf-6.3.0.tar.xz && tar xf perf-6.3.0.tar.xz && cd perf-6.3.0/ && make -C tools/perf install && cd ../ && rm -rf perf-6.3.0*
 
 COPY --from=pwru /usr/local/bin/pwru /usr/local/bin/pwru
 COPY --from=bpftrace /usr/bin/bpftrace /usr/local/bin/bpftrace
