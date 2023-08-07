@@ -47,7 +47,11 @@ RUN yum -y install \
     kernel-headers \
     glibc-headers \
     @development-tools \
-    darkhttpd
+    darkhttpd \
+    bcc-tools perl-interpreter \
+    python3-pytz  python3-psutil
+
+RUN wget https://github.com/chaudron/ovs/blob/dev/kernel_delay/utilities/usdt-scripts/kernel_delay.py && chmod +x kernel_delay.py
 RUN wget https://mirrors.edge.kernel.org/pub/linux/kernel/tools/perf/v6.3.0/perf-6.3.0.tar.xz && tar xf perf-6.3.0.tar.xz && cd perf-6.3.0/ && make -C tools/perf install && cd ../ && rm -rf perf-6.3.0*
 
 COPY --from=pwru /usr/local/bin/pwru /usr/local/bin/pwru
