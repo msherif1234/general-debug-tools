@@ -2,13 +2,14 @@ kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
   name: iperf3-server-access
+  namespace: default
 spec:
   podSelector:
     matchLabels:
       app: iperf3-server
   ingress:
   - ports:
-    - port: 5201
+    - port: 5501
     from:
     - podSelector:
         matchLabels:
