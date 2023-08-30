@@ -44,6 +44,7 @@ RUN yum -y install \
     arptables-legacy \
     ebtables-legacy \
     iptables-utils \
+	iproute-tc \
     kernel-headers \
     glibc-headers \
     @development-tools \
