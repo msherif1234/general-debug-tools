@@ -52,8 +52,14 @@ RUN yum -y install \
     bcc-tools perl-interpreter \
     python3-pytz  python3-psutil
 
+RUN wget http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/61.el8fdp/x86_64/openvswitch3.1-debuginfo-3.1.0-61.el8fdp.x86_64.rpm
+RUN wget http://download-node-02.eng.bos.redhat.com/brewroot/packages/openvswitch3.1/3.1.0/61.el8fdp/x86_64/openvswitch3.1-debugsource-3.1.0-61.el8fdp.x86_64.rpm
 RUN wget https://github.com/chaudron/ovs/blob/dev/kernel_delay/utilities/usdt-scripts/kernel_delay.py && chmod +x kernel_delay.py
 RUN wget https://mirrors.edge.kernel.org/pub/linux/kernel/tools/perf/v6.3.0/perf-6.3.0.tar.xz && tar xf perf-6.3.0.tar.xz && cd perf-6.3.0/ && make -C tools/perf install && cd ../ && rm -rf perf-6.3.0*
+
+RUN rpm -i \
+    openvswitch3.1-debuginfo-3.1.0-61.el8fdp.x86_64.rpm \
+    openvswitch3.1-debugsource-3.1.0-61.el8fdp.x86_64.rpm
 
 COPY --from=pwru /usr/local/bin/pwru /usr/local/bin/pwru
 COPY --from=bpftrace /usr/bin/bpftrace /usr/local/bin/bpftrace
