@@ -77,10 +77,4 @@ Collecting bpf information. This may take a few seconds
 troubleshooting delays and identofy if its kernel or ovs related
 for more info refer to https://developers.redhat.com/articles/2023/07/24/troubleshooting-open-vswitch-kernel-blame
 
-before using the tool on OCP node u need to install the following
-```bash
-rpm -i \
-    openvswitch2.17-debuginfo-2.17.0-67.el8fdp.x86_64.rpm \
-    openvswitch2.17-debugsource-2.17.0-67.el8fdp.x86_64.rpm \
-    kernel-devel-4.18.0-372.41.1.el8_6.x86_64.rpm
-```
+for examples refer to https://github.com/chaudron/ovs/blob/dev/kernel_delay/utilities/usdt-scripts/kernel_delay.rst
