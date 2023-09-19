@@ -56,6 +56,9 @@ spec:
           name: cgroup
         - mountPath: /proc
           name: proc
+        - mountPath: /sys/fs/bpf
+          name: bpffs
+          mountPropagation: Bidirectional
       terminationGracePeriodSeconds: 0
       nodeSelector:
         kubernetes.io/hostname: <node name>
@@ -80,5 +83,9 @@ spec:
         hostPath:
           path: /proc
           type: Directory
+      - name: bpffs
+        hostPath:
+          path: /sys/fs/bpf
+          type: DirectoryOrCreate
 ---
 
