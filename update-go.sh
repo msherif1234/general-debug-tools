@@ -5,7 +5,7 @@ mkdir -p $HOME/go/src
 git clone https://github.com/udhos/update-golang.git
 	
 pushd update-golang
-sudo ./update-golang.sh	
+sudo RELEASE=1.20.10 ./update-golang.sh # if need to install latest remove RELEASE=xxx
 popd
 	
 export GOPATH=$HOME/go
