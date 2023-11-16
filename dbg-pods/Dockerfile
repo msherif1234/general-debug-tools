@@ -20,6 +20,7 @@ RUN yum -y install \
     git \
     gdb \
     curl \
+    grpcurl \
     findutils \
     procps-ng \
     nftables \

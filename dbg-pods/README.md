@@ -1,8 +1,8 @@
 # To build netutils docker images
 
 ```bash
-docker build -f Dockerfile -t netutils
-docker tag localhost/netutils:latest quay.io/mmahmoud/netutils:latest
+docker build -f Dockerfile . -t netutils
+docker tag netutils:latest quay.io/mmahmoud/netutils:latest
 docker push quay.io/mmahmoud/netutils:latest
 ```
 
