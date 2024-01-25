@@ -20,7 +20,6 @@ spec:
       image: tutum/dnsutils
       command: ["/bin/sh", "-ec", "while :; do dig www.google.com +tcp; sleep 10; done"]
      #command: ["/bin/sh", "-ec", "while :; do dig www.google.com; sleep 10; done"]
-      restartPolicy: Never
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
