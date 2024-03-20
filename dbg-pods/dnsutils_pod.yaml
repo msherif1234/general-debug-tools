@@ -18,8 +18,8 @@ spec:
   containers:
     - name: utils
       image: tutum/dnsutils
-      command: ["/bin/sh", "-ec", "while :; do dig www.google.com +tcp; sleep 10; done"]
-     #command: ["/bin/sh", "-ec", "while :; do dig www.google.com; sleep 10; done"]
+     #command: ["/bin/sh", "-ec", "while :; do dig www.google.com +tcp; sleep 10; done"]
+      command: ["/bin/sh", "-ec", "while :; do dig www.google.com; sleep 10; done"]
       securityContext:
         allowPrivilegeEscalation: false
         capabilities:
