@@ -6,8 +6,8 @@ git clone https://github.com/udhos/update-golang.git
 	
 pushd update-golang
 #sudo RELEASE=1.20.10 ./update-golang.sh # if need to install latest remove RELEASE=xxx
-sudo RELEASE=1.21.7 ./update-golang.sh # if need to install latest remove RELEASE=xxx
-#sudo RELEASE=1.22.1 ./update-golang.sh # if need to install latest remove RELEASE=xxx
+#sudo RELEASE=1.21.7 ./update-golang.sh # if need to install latest remove RELEASE=xxx
+sudo RELEASE=1.22.3 ./update-golang.sh # if need to install latest remove RELEASE=xxx
 #sudo ./update-golang.sh # if need to install latest remove RELEASE=xxx
 popd
 	

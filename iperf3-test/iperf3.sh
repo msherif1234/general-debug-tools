@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set +x
 
-NAMESPACE=default
+NAMESPACE=iperf
 
 cd $(dirname $0)
 function setup() {
+        oc create ns ${NAMESPACE}
 	oc create -f iperf3.yaml
 
 	until $(oc get pods -n ${NAMESPACE} -l app=iperf3-server -o jsonpath='{.items[0].status.containerStatuses[0].ready}'); do
@@ -37,6 +38,7 @@ function run() {
 
 function cleanup() {
 	oc delete --cascade -f iperf3.yaml
+	oc delete namespace ${NAMESPACE}
 }
 
 setup
