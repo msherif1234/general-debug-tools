@@ -38,7 +38,7 @@ function run() {
 
 function cleanup() {
 	oc delete --cascade -f iperf3.yaml
-	oc delete namespace ${NAMESPACE}
+	#oc delete namespace ${NAMESPACE}
 }
 
 setup
