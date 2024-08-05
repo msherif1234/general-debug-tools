@@ -9,7 +9,7 @@ spec:
       app: iperf3-client
   egress:
   - ports:
-    - port: 5501
+    - port: 5201
     from:
     - podSelector:
         matchLabels:
