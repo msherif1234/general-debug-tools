@@ -1,0 +1,16 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: iperf3-server-access-egress
+  namespace: iperf
+spec:
+  podSelector:
+    matchLabels:
+      app: iperf3-client
+  egress:
+  - ports:
+    - port: 5501
+    from:
+    - podSelector:
+        matchLabels:
+          app: iperf3-server

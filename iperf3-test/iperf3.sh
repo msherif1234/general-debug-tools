@@ -28,8 +28,8 @@ function run() {
     	done
 
 	if [[ $counter -lt 5 ]]; then
-    	    oc exec -it ${POD} -n ${NAMESPACE} -- bash -c 'iperf3 -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT_TCP" -t1'
-    	    #oc exec -it ${POD} -n ${NAMESPACE} -- bash -c 'iperf3 -u -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT_UDP" -t1'
+    	    oc exec -it ${POD} -n ${NAMESPACE} -- bash -c 'iperf3 -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT_TCP" -t5'
+    	    #oc exec -it ${POD} -n ${NAMESPACE} -- bash -c 'iperf3 -u -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT_UDP" -t5'
 	fi
 
     	echo
