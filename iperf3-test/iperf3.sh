@@ -28,8 +28,13 @@ function run() {
     	done
 
 	if [[ $counter -lt 5 ]]; then
-    	    oc exec -it ${POD} -n ${NAMESPACE} -- bash -c 'iperf3 -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT_TCP" -t5'
-    	    #oc exec -it ${POD} -n ${NAMESPACE} -- bash -c 'iperf3 -u -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT_UDP" -t5'
+            cnt=1
+            while [ $cnt -le 10 ]; do
+    	    	oc exec -it ${POD} -n ${NAMESPACE} -- bash -c 'iperf3 -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT_TCP" -t10 --connect-timeout 1'
+    	    	#oc exec -it ${POD} -n ${NAMESPACE} -- bash -c 'iperf3 -u -c "$IPERF3_SERVER_SERVICE_HOST" -p "$IPERF3_SERVER_SERVICE_PORT_UDP" -t5'
+            	sleep 1
+            	((cnt++))
+            done
 	fi
 
     	echo
