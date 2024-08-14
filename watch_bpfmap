@@ -1,0 +1,14 @@
+#!/bin/bash
+set +x
+
+# $1 is map id
+
+command="bpftool map dump id $1 | grep -E 'idx\": [1-9]' -A5"
+
+while true; do
+  eval "$command" | while read line; do
+    echo "$(date +"[%Y-%m-%d %H:%M:%S]") $line"
+  done
+  sleep 1
+done
+
