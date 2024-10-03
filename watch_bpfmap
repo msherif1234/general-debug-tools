@@ -3,7 +3,7 @@ set +x
 
 # $1 is map id
 
-command="bpftool map dump id $1 | grep -E 'idx\": [1-9]' -A5"
+command="bpftool map dump id $1 | grep -E 'idx\": [1-9]' -A2"
 
 while true; do
   eval "$command" | while read line; do
