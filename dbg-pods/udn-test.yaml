@@ -1,0 +1,22 @@
+
+---
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: xlat-test
+
+---
+
+kind: UserDefinedNetwork
+apiVersion: k8s.ovn.org/v1
+metadata:
+  name: test-network
+  namespace: xlat-test
+spec:
+  topology: Layer3
+  layer3:
+       role: Primary
+       subnets:
+       - cidr: "10.10.0.0/16"
+       hostSubnet: 24
+
