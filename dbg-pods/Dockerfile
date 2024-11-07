@@ -1,17 +1,19 @@
 ARG PWRU_VERSION="1.0.4"
 ARG BPFTRACE_VERSION="cf54d1682c19c0b2ebc7f81160282345c0aded79-alpine"
 ARG RETIS_VERSION="latest"
+ARG BPFMAN_VERSION="latest"
 
 FROM docker.io/cilium/pwru:${PWRU_VERSION} AS pwru
 FROM quay.io/iovisor/bpftrace:${BPFTRACE_VERSION} AS bpftrace
 FROM quay.io/retis/retis:${RETIS_VERSION} AS retis
+FROM quay.io/bpfman/bpfman:${BPFMAN_VERSION} AS bpfman
 
 FROM docker.io/library/golang:1.20 as builder
 RUN git clone https://github.com/redcanaryco/ebpfmon.git && cd ebpfmon && make && cp ./ebpfmon /usr/bin/ebpfmon
-RUN curl -fLJ https://github.com/Netflix/bpftop/releases/latest/download/bpftop -o bpftop && chmod +x bpftop && cp bpftop /usr/bin/bpftop
+RUN curl -fLJ https://github.com/Netflix/bpftop/releases/download/v0.5.2/bpftop-x86_64-unknown-linux-gnu -o bpftop && chmod +x bpftop && cp bpftop /usr/bin/bpftop
 #RUN git clone https://github.com/chaudron/ovs.git -b dev/kernel_delay && cp ./ovs/utilities/usdt-scripts/kernel_delay.py /usr/bin/kernel_delay.py && chmod +x /usr/bin/kernel_delay.py
 
-FROM docker.io/fedora:39
+FROM docker.io/fedora:40
 
 RUN yum -y install \
     iproute \
@@ -69,4 +71,5 @@ COPY --from=bpftrace /usr/bin/bpftrace /usr/local/bin/bpftrace
 COPY --from=retis /usr/bin/retis /usr/local/bin/retis
 COPY --from=builder /usr/bin/ebpfmon /usr/local/bin/ebpfmon
 COPY --from=builder /usr/bin/bpftop /usr/local/bin/bpftop
+COPY --from=bpfman /bpfman /usr/local/bin/bpfman
 #COPY --from=builder /usr/bin/kernel_delay.py /usr/local/bin/kernel_delay.py

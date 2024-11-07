@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ping-test
+  labels:
+    app: ping-test
+spec:
+  containers:
+  - name: ping
+    image: busybox
+    args:
+    - /bin/sh
+    - -c
+    - "ping 8.8.8.8"
+    securityContext:
+      capabilities:
+        add:
+        - NET_RAW
+  restartPolicy: Never
+
