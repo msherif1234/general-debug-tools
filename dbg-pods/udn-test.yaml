@@ -1,9 +1,16 @@
 
 ---
-kind: Namespace
-apiVersion: v1
+
+kind: UserDefinedNetwork
+apiVersion: k8s.ovn.org/v1
 metadata:
-  name: xlat-test
+  name: test-network
+  namespace: test-1
+spec:
+  topology: Layer2
+  layer2:
+       role: Primary
+       subnets: ["10.10.0.0/16"]
 
 ---
 
@@ -11,12 +18,11 @@ kind: UserDefinedNetwork
 apiVersion: k8s.ovn.org/v1
 metadata:
   name: test-network
-  namespace: xlat-test
+  namespace: test-2
 spec:
-  topology: Layer3
-  layer3:
+  topology: Layer2
+  layer2:
        role: Primary
-       subnets:
-       - cidr: "10.10.0.0/16"
-       hostSubnet: 24
+       subnets: ["10.10.0.0/16"]
+
 

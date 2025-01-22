@@ -1,16 +1,9 @@
 
----
-apiVersion: v1
-kind: Namespace
-metadata:
- name: xlat-test
-
----
 apiVersion: v1
 kind: Pod
 metadata:
  name: hello-pod
- namespace: xlat-test
+ namespace: test-1
  labels:
   app: hello-pod
 spec:
@@ -21,11 +14,28 @@ spec:
    - containerPort: 8080
      protocol: TCP
 ---
+
+apiVersion: v1
+kind: Pod
+metadata:
+ name: hello-pod
+ namespace: test-2
+ labels:
+  app: hello-pod
+spec:
+ containers:
+ - name: hello-world
+   image: gcr.io/google-samples/node-hello:1.0
+   ports:
+   - containerPort: 8080
+     protocol: TCP
+---
+
 kind: Service
 apiVersion: v1
 metadata:
  name: hello-pod
- namespace: xlat-test
+ namespace: test-1
 spec:
   ports:
   - name: http
@@ -35,5 +45,4 @@ spec:
   selector:
     app: hello-pod
   type: ClusterIP
-
 
