@@ -42,8 +42,6 @@ spec:
         - containerPort: 5301
           name: server-udp
       terminationGracePeriodSeconds: 0
-      nodeSelector:
-        kubernetes.io/hostname: <node name>
 
 ---
 
@@ -89,6 +87,4 @@ spec:
         command: ['/bin/sh', '-c', 'sleep infinity']
         # To benchmark manually: oc exec iperf3-clients-jlfxq -- /bin/sh -c 'iperf3 -c iperf3-server'
       terminationGracePeriodSeconds: 0
-      nodeSelector:
-        kubernetes.io/hostname: <node name>
 
